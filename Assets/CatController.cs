@@ -6,53 +6,51 @@ using UnityEngine;
 public class CatController : MonoBehaviour
 {
     private Animator Animator;
-    //private Rigidbody Rigidbody;
-    //private float velocityZ = 15f;
-    //private float velocityX = 15f;
+    private Rigidbody Rigidbody;
+    private float velocityZ = 5f;
     private float movingRange = 2f;
+    private float targetPositionX = 2f;
+    private float sumTime = 0f;
+    private float limitTime = 1f;
+    private float ratio = 0f;
 
     // Start is called before the first frame update
     void Start()
     {
         this.Animator = GetComponent<Animator>();
         this.Animator.SetFloat("Speed", 1);
-        //this.Rigidbody = GetComponent<Rigidbody>();
+        this.Rigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //float inputVelocityX = 0;
+        //catをZ方向に移動させる
+        this.Rigidbody.velocity = new Vector3(0f, 0f, velocityZ);
+
+        //catの現在地を取得する
         Vector3 startPosition = this.transform.position;
-        float endPositionX = startPosition.x;
-
-        if (Input.GetKey(KeyCode.LeftArrow) && -this.movingRange < this.transform.position.x)
+        //catの目的地を取得する
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && -this.movingRange < startPosition.x)
         {
-            //inputVelocityX = -this.velocityX;
-            endPositionX = -2;
+            targetPositionX = -this.movingRange;
+            sumTime = 0f;
         }
-        else if (Input.GetKey(KeyCode.RightArrow) && this.transform.position.x < this.movingRange)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && this.movingRange > startPosition.x)
         {
-            //inputVelocityX = this.velocityX;
-            endPositionX = 2;
+            targetPositionX = this.movingRange;
+            sumTime = 0f;
         }
-        //this.Rigidbody.velocity = new Vector3(inputVelocityX, 0, velocityZ);
+        Vector3 targetPosition = new Vector3(targetPositionX, 0, startPosition.z);
 
-        float endPositionZ = startPosition.z + 0.1f;
-        Vector3 endPosition = new Vector3(endPositionX, 0, endPositionZ);
-
-        //float sumTime = 0f;
-        //float ratio = 0f;
-        //while (ratio < 1.0f)
-        for (float i = 0f; i <= 1f; i += 0.1f)
+        //キーを押してからの経過時間を取得する
+        sumTime += Time.deltaTime;
+        if (sumTime < limitTime)
         {
-            //経過時間
-            //sumTime += Time.deltaTime;
-            //時間の割合
-            //ratio = sumTime / 1;
-            // オブジェクトの移動
-            //transform.position = Vector3.Lerp(startPosition, endPosition, ratio);
-            transform.position = Vector3.Lerp(startPosition, endPosition, i);
+            //経過時間の割合を取得する
+            ratio = sumTime / limitTime;
+            //catを目的地へ移動させる
+            transform.position = Vector3.Lerp(startPosition, targetPosition, ratio);
         }
     }
 
