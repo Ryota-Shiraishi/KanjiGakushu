@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using TMPro;
 
 public class ItemGenerator : MonoBehaviour
 {
-    //TextPrefabを入れる
-    public GameObject textPrefabTrue;
-    public GameObject textPrefabFalse;
+    //FishPrefabを入れる
+    public GameObject fishPrefab;
     //スタート地点
     private int startPos = 30;
     //ゴール地点
@@ -27,8 +27,7 @@ public class ItemGenerator : MonoBehaviour
     {
         catObj = GameObject.Find("cat");
         //CSVを開く
-        TextAsset textasset = new TextAsset();
-        textasset = Resources.Load("kanji", typeof(TextAsset)) as TextAsset;
+        TextAsset textasset = Resources.Load("kanji", typeof(TextAsset)) as TextAsset;
         string textData = textasset.text;
         string[] textArr = textData.Split('\n');
         int rowLength = textArr.Length;
@@ -67,28 +66,34 @@ public class ItemGenerator : MonoBehaviour
                     tmpPosX = 3;
                 }
                 //正解のオブジェクトを生成する
-                GameObject textObjTrue = Instantiate(textPrefabTrue);
-                textObjTrue.transform.position = new Vector3(tmpPosX, 0, tmpPosZ);
+                GameObject fishObjTrue = Instantiate(fishPrefab);
+                fishObjTrue.tag = "True";
+                fishObjTrue.transform.position = new Vector3(tmpPosX, 1.5f, tmpPosZ);
+                //漢字を選ぶ
                 int cnt = this.trueList.Count;
                 if (cnt == 0)
                 {
                     this.ListAdd();
                     cnt = this.trueList.Count;
                 }
-                int i = Random.Range(0, cnt);
-                int r = this.trueList[i];
+                int rnd = Random.Range(0, cnt);
+                int r = this.trueList[rnd];
                 string tmpChar = this.textData2D[r, this.tsukuri];
-                textObjTrue.GetComponent<TextMesh>().text = tmpChar;
-                this.trueList.RemoveAt(i);
+                this.trueList.RemoveAt(rnd);
+                //オブジェクトに漢字を表示する
+                fishObjTrue.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = tmpChar;
 
                 //不正解のオブジェクトを生成する
-                GameObject textObjFalse = Instantiate(textPrefabFalse);
-                textObjFalse.transform.position = new Vector3(-tmpPosX, 0, tmpPosZ);
-                i = Random.Range(0, this.falseList.Count);
-                r = this.falseList[i];
+                GameObject fishObjFalse = Instantiate(fishPrefab);
+                fishObjFalse.tag = "False";
+                fishObjFalse.transform.position = new Vector3(-tmpPosX, 1.5f, tmpPosZ);
+                //漢字を選ぶ
+                rnd = Random.Range(0, this.falseList.Count);
+                r = this.falseList[rnd];
                 tmpChar = this.textData2D[r, this.tsukuri];
-                textObjFalse.GetComponent<TextMesh>().text = tmpChar;
-                this.falseList.RemoveAt(i);
+                this.falseList.RemoveAt(rnd);
+                //オブジェクトに漢字を表示する
+                fishObjFalse.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = tmpChar;
             }
         }
     }

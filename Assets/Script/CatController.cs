@@ -7,7 +7,7 @@ public class CatController : MonoBehaviour
 {
     private Animator Animator;
     private Rigidbody Rigidbody;
-    private float velocityZ = 5f;
+    private float velocityZ = 10f;
     private float movingRange = 2f;
     private float targetPositionX = 2f;
     private float sumTime = 0f;
@@ -59,11 +59,12 @@ public class CatController : MonoBehaviour
         switch (other.tag)
         {
             case "True" :
-                GetComponent<ParticleSystem>().Play();
+                //GetComponent<ParticleSystem>().Play();
+                Destroy(other.transform.GetChild(0).gameObject);
                 break;
             case "False":
+                Destroy(other.gameObject);
                 break;
         }
-        Destroy(other.gameObject);
     }
 }
