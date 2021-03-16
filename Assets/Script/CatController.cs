@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class CatController : MonoBehaviour
 {
+    private bool gameStart = false;
     private Animator Animator;
     private Rigidbody Rigidbody;
-    private float velocityZ = 10f;
+    private float velocityZ = 0f;
     private float movingRange = 2f;
     private float targetPositionX = 2f;
     private float sumTime = 0f;
@@ -25,6 +26,13 @@ public class CatController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        this.gameStart = GameObject.Find("GameManager").GetComponent<GameManager>().gameStart;
+        if (this.gameStart)
+        {
+            
+            velocityZ = 10f;
+        }
+
         //catをZ方向に移動させる
         this.Rigidbody.velocity = new Vector3(0f, 0f, velocityZ);
 
@@ -61,9 +69,11 @@ public class CatController : MonoBehaviour
             case "True" :
                 //GetComponent<ParticleSystem>().Play();
                 Destroy(other.transform.GetChild(0).gameObject);
+                Destroy(GameObject.Find(other.name.Replace("true","false")));
                 break;
             case "False":
                 Destroy(other.gameObject);
+                Destroy(GameObject.Find(other.name.Replace("false","true")));
                 break;
         }
     }

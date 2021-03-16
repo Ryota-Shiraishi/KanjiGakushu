@@ -19,6 +19,7 @@ public class ItemGenerator : MonoBehaviour
     private string[,] textData2D;
     private int tsukuri = 0;
     private int bushu = 1;
+    private int objNo = 0;
     private List<int> trueList = new List<int>();
     private List<int> falseList = new List<int>();
 
@@ -65,8 +66,10 @@ public class ItemGenerator : MonoBehaviour
                 {
                     tmpPosX = 3;
                 }
+                this.objNo++;
                 //正解のオブジェクトを生成する
                 GameObject fishObjTrue = Instantiate(fishPrefab);
+                fishObjTrue.name = "Q" + this.objNo.ToString() + "_true";
                 fishObjTrue.tag = "True";
                 fishObjTrue.transform.position = new Vector3(tmpPosX, 1.5f, tmpPosZ);
                 //漢字を選ぶ
@@ -85,6 +88,7 @@ public class ItemGenerator : MonoBehaviour
 
                 //不正解のオブジェクトを生成する
                 GameObject fishObjFalse = Instantiate(fishPrefab);
+                fishObjTrue.name = "Q" + this.objNo.ToString() + "_false";
                 fishObjFalse.tag = "False";
                 fishObjFalse.transform.position = new Vector3(-tmpPosX, 1.5f, tmpPosZ);
                 //漢字を選ぶ
