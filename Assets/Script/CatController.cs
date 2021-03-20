@@ -6,6 +6,7 @@ using UnityEngine;
 public class CatController : MonoBehaviour
 {
     private bool gameStart = false;
+    private bool onTrigger = false;
     private Animator Animator;
     private Rigidbody Rigidbody;
     private float velocityZ = 0f;
@@ -39,12 +40,12 @@ public class CatController : MonoBehaviour
         //catの現在地を取得する
         Vector3 startPosition = this.transform.position;
         //catの目的地を取得する
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && -this.movingRange < startPosition.x)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && -this.movingRange < startPosition.x && onTrigger == false)
         {
             targetPositionX = -this.movingRange;
             sumTime = 0f;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && this.movingRange > startPosition.x)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && this.movingRange > startPosition.x && onTrigger == false)
         {
             targetPositionX = this.movingRange;
             sumTime = 0f;
@@ -68,13 +69,16 @@ public class CatController : MonoBehaviour
         {
             case "True" :
                 //GetComponent<ParticleSystem>().Play();
+                this.onTrigger = true;
                 Destroy(other.transform.GetChild(0).gameObject);
-                Destroy(GameObject.Find(other.name.Replace("true","false")));
+                //Destroy(GameObject.Find(other.name.Replace("true","false")));
                 break;
             case "False":
+                this.onTrigger = true;
                 Destroy(other.gameObject);
-                Destroy(GameObject.Find(other.name.Replace("false","true")));
+                //Destroy(GameObject.Find(other.name.Replace("false","true")));
                 break;
         }
+        this.onTrigger = false;
     }
 }

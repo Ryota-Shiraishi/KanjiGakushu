@@ -18,7 +18,7 @@ public class ItemGenerator : MonoBehaviour
     private float catPosZ = 0f;
     private string[,] textData2D;
     private int tsukuri = 0;
-    private int bushu = 1;
+    private int bushu;
     private int objNo = 0;
     private List<int> trueList = new List<int>();
     private List<int> falseList = new List<int>();
@@ -26,7 +26,8 @@ public class ItemGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        catObj = GameObject.Find("cat");
+        this.bushu = GameObject.Find("GameManager").GetComponent<GameManager>().gameMode;
+        this.catObj = GameObject.Find("cat");
         //CSVを開く
         TextAsset textasset = Resources.Load("kanji", typeof(TextAsset)) as TextAsset;
         string textData = textasset.text;
@@ -88,7 +89,7 @@ public class ItemGenerator : MonoBehaviour
 
                 //不正解のオブジェクトを生成する
                 GameObject fishObjFalse = Instantiate(fishPrefab);
-                fishObjTrue.name = "Q" + this.objNo.ToString() + "_false";
+                fishObjFalse.name = "Q" + this.objNo.ToString() + "_false";
                 fishObjFalse.tag = "False";
                 fishObjFalse.transform.position = new Vector3(-tmpPosX, 1.5f, tmpPosZ);
                 //漢字を選ぶ
