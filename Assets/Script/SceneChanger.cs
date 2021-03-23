@@ -18,7 +18,7 @@ public class SceneChanger : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0) == true)
         {
-            SceneManager.LoadScene("GameScene");            
+            SceneManager.LoadScene("GameScene");
         }   
     }
 }

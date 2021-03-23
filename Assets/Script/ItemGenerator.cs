@@ -16,34 +16,16 @@ public class ItemGenerator : MonoBehaviour
     private GameObject catObj;
     //catのZ座標を入れる
     private float catPosZ = 0f;
-    private string[,] textData2D;
     private int tsukuri = 0;
-    private int bushu;
     private int objNo = 0;
-    private List<int> trueList = new List<int>();
-    private List<int> falseList = new List<int>();
+    QuizMaker quizMaker;
 
     // Start is called before the first frame update
     void Start()
     {
-        this.bushu = GameObject.Find("GameManager").GetComponent<GameManager>().gameMode;
         this.catObj = GameObject.Find("cat");
-        //CSVを開く
-        TextAsset textasset = Resources.Load("kanji", typeof(TextAsset)) as TextAsset;
-        string textData = textasset.text;
-        string[] textArr = textData.Split('\n');
-        int rowLength = textArr.Length;
-        int colLength = textArr[0].Split(',').Length;
-        this.textData2D = new string[rowLength,colLength];
-        for (int r = 0; r < rowLength; r++)
-        {
-            string[] tmpArr = textArr[r].Split(',');
-            for (int c = 0; c < colLength; c++)
-            {
-                this.textData2D[r, c] = tmpArr[c];
-            }
-        }
-        this.ListAdd();
+        this.quizMaker = GameObject.Find("QuizMaker").GetComponent<QuizMaker>(); ;
+        this.quizMaker.creList();
     }
 
     // Update is called once per frame
@@ -74,16 +56,16 @@ public class ItemGenerator : MonoBehaviour
                 fishObjTrue.tag = "True";
                 fishObjTrue.transform.position = new Vector3(tmpPosX, 1.5f, tmpPosZ);
                 //漢字を選ぶ
-                int cnt = this.trueList.Count;
+                int cnt = this.quizMaker.trueList.Count;
                 if (cnt == 0)
                 {
-                    this.ListAdd();
-                    cnt = this.trueList.Count;
+                    this.quizMaker.creList();
+                    cnt = this.quizMaker.trueList.Count;
                 }
                 int rnd = Random.Range(0, cnt);
-                int r = this.trueList[rnd];
-                string tmpChar = this.textData2D[r, this.tsukuri];
-                this.trueList.RemoveAt(rnd);
+                int r = this.quizMaker.trueList[rnd];
+                string tmpChar = this.quizMaker.exChar(r, this.tsukuri);
+                this.quizMaker.trueList.RemoveAt(rnd);
                 //オブジェクトに漢字を表示する
                 fishObjTrue.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = tmpChar;
 
@@ -93,27 +75,12 @@ public class ItemGenerator : MonoBehaviour
                 fishObjFalse.tag = "False";
                 fishObjFalse.transform.position = new Vector3(-tmpPosX, 1.5f, tmpPosZ);
                 //漢字を選ぶ
-                rnd = Random.Range(0, this.falseList.Count);
-                r = this.falseList[rnd];
-                tmpChar = this.textData2D[r, this.tsukuri];
-                this.falseList.RemoveAt(rnd);
+                rnd = Random.Range(0, this.quizMaker.falseList.Count);
+                r = this.quizMaker.falseList[rnd];
+                tmpChar = this.quizMaker.exChar(r, this.tsukuri);
+                this.quizMaker.falseList.RemoveAt(rnd);
                 //オブジェクトに漢字を表示する
                 fishObjFalse.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = tmpChar;
-            }
-        }
-    }
-
-    void ListAdd()
-    {
-        for (int r = 1; r < this.textData2D.GetLength(0); r++)
-        {
-            if (this.textData2D[r, this.bushu] == "×")
-            {
-                this.falseList.Add(r);
-            }
-            else
-            {
-                this.trueList.Add(r);
             }
         }
     }

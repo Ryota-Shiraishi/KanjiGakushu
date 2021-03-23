@@ -6,7 +6,6 @@ using UnityEngine;
 public class CatController : MonoBehaviour
 {
     private bool gameStart = false;
-    private bool onTrigger = false;
     private Animator Animator;
     private Rigidbody Rigidbody;
     private float velocityZ = 0f;
@@ -15,6 +14,7 @@ public class CatController : MonoBehaviour
     private float sumTime = 0f;
     private float limitTime = 1f;
     private float ratio = 0f;
+    private float count;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +30,6 @@ public class CatController : MonoBehaviour
         this.gameStart = GameObject.Find("GameManager").GetComponent<GameManager>().gameStart;
         if (this.gameStart)
         {
-            
             velocityZ = 10f;
         }
 
@@ -40,12 +39,12 @@ public class CatController : MonoBehaviour
         //catの現在地を取得する
         Vector3 startPosition = this.transform.position;
         //catの目的地を取得する
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && -this.movingRange < startPosition.x && onTrigger == false)
+        if (Input.GetKeyDown(KeyCode.LeftArrow) && -this.movingRange < startPosition.x)
         {
             targetPositionX = -this.movingRange;
             sumTime = 0f;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && this.movingRange > startPosition.x && onTrigger == false)
+        else if (Input.GetKeyDown(KeyCode.RightArrow) && this.movingRange > startPosition.x )
         {
             targetPositionX = this.movingRange;
             sumTime = 0f;
@@ -59,7 +58,7 @@ public class CatController : MonoBehaviour
             //経過時間の割合を取得する
             ratio = sumTime / limitTime;
             //catを目的地へ移動させる
-            transform.position = Vector3.Lerp(startPosition, targetPosition, ratio);
+            this.transform.position = Vector3.Lerp(startPosition, targetPosition, ratio);
         }
     }
 
@@ -69,16 +68,13 @@ public class CatController : MonoBehaviour
         {
             case "True" :
                 //GetComponent<ParticleSystem>().Play();
-                this.onTrigger = true;
                 Destroy(other.transform.GetChild(0).gameObject);
                 //Destroy(GameObject.Find(other.name.Replace("true","false")));
                 break;
             case "False":
-                this.onTrigger = true;
                 Destroy(other.gameObject);
                 //Destroy(GameObject.Find(other.name.Replace("false","true")));
                 break;
         }
-        this.onTrigger = false;
     }
 }

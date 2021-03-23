@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class ItemDestroy : MonoBehaviour
 {
-    GameObject MainCamera;
-    float objPosZ = 0;
+    private GameObject mainCamera;
+    private GameObject cat;
+    private float objPosZ = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        objPosZ = gameObject.transform.position.z;
+        objPosZ = this.gameObject.transform.position.z;
     }
 
     // Update is called once per frame
     void Update()
     {
-        MainCamera = GameObject.Find("Main Camera");
-        if (MainCamera.transform.position.z >= objPosZ)
+        mainCamera = GameObject.Find("Main Camera");
+        if (mainCamera.transform.position.z >= objPosZ)
         {
             Destroy(gameObject);
+        }
+        cat = GameObject.Find("cat");
+        if (cat.transform.position.z >= objPosZ)
+        {
+            this.gameObject.GetComponent<MeshCollider>().enabled = false;
         }
     }
 }

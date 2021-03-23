@@ -9,13 +9,12 @@ public class GameManager : MonoBehaviour
     public bool gameStart = false;
     public TextMeshPro startText;
     public float countDown = 3f;
-    int seconds;
+    private int seconds;
 
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         this.gameMode = GameObject.Find("SceneChanger").GetComponent<SceneChanger>().gameMode;
-        Debug.Log(gameMode);
     }
 
     // Update is called once per frame
@@ -32,6 +31,5 @@ public class GameManager : MonoBehaviour
             startText.text = "";
             gameStart = true;
         }
-
     }
 }
