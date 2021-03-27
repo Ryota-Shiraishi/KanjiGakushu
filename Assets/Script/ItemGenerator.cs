@@ -16,7 +16,6 @@ public class ItemGenerator : MonoBehaviour
     private GameObject catObj;
     //catのZ座標を入れる
     private float catPosZ = 0f;
-    private int tsukuri = 0;
     private int objNo = 0;
     QuizMaker quizMaker;
 
@@ -55,32 +54,15 @@ public class ItemGenerator : MonoBehaviour
                 fishObjTrue.name = "Q" + this.objNo.ToString() + "_true";
                 fishObjTrue.tag = "True";
                 fishObjTrue.transform.position = new Vector3(tmpPosX, 1.5f, tmpPosZ);
-                //漢字を選ぶ
-                int cnt = this.quizMaker.trueList.Count;
-                if (cnt == 0)
-                {
-                    this.quizMaker.creList();
-                    cnt = this.quizMaker.trueList.Count;
-                }
-                int rnd = Random.Range(0, cnt);
-                int r = this.quizMaker.trueList[rnd];
-                string tmpChar = this.quizMaker.exChar(r, this.tsukuri);
-                this.quizMaker.trueList.RemoveAt(rnd);
                 //オブジェクトに漢字を表示する
-                fishObjTrue.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = tmpChar;
-
+                fishObjTrue.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = this.quizMaker.exChar(true);
                 //不正解のオブジェクトを生成する
                 GameObject fishObjFalse = Instantiate(fishPrefab);
                 fishObjFalse.name = "Q" + this.objNo.ToString() + "_false";
                 fishObjFalse.tag = "False";
                 fishObjFalse.transform.position = new Vector3(-tmpPosX, 1.5f, tmpPosZ);
-                //漢字を選ぶ
-                rnd = Random.Range(0, this.quizMaker.falseList.Count);
-                r = this.quizMaker.falseList[rnd];
-                tmpChar = this.quizMaker.exChar(r, this.tsukuri);
-                this.quizMaker.falseList.RemoveAt(rnd);
                 //オブジェクトに漢字を表示する
-                fishObjFalse.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = tmpChar;
+                fishObjFalse.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = this.quizMaker.exChar(false);
             }
         }
     }

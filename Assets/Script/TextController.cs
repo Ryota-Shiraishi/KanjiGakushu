@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class TextController : MonoBehaviour
 {
     private GameObject cat;
     private float difference;
@@ -10,13 +10,13 @@ public class CameraController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.cat = GameObject.Find("cat");  
-        this.difference = cat.transform.position.z - this.transform.position.z;
+        this.cat = GameObject.Find("cat");
+        this.difference = this.transform.position.z - cat.transform.position.z;
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.position = new Vector3(0, this.transform.position.y, this.cat.transform.position.z - difference);
+        this.transform.position = new Vector3(0, this.transform.position.y, this.cat.transform.position.z + difference);
     }
 }

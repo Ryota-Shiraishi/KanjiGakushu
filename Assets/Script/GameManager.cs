@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
     public int gameMode;
     public bool gameStart = false;
     public TextMeshPro startText;
-    public float countDown = 3f;
+    public float countDown = 4f;
     private int seconds;
 
     // Start is called before the first frame update
@@ -19,17 +19,20 @@ public class GameManager : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
-        countDown -= Time.deltaTime;
-        seconds = (int)countDown;
-        if (seconds > 0)
+    {
+        if (gameStart == false)
         {
-            startText.text = seconds.ToString();
-        }
-        else
-        {
-            startText.text = "";
-            gameStart = true;
+            countDown -= Time.deltaTime;
+            seconds = (int)countDown;
+            if (seconds > 0)
+            {
+                startText.text = seconds.ToString();
+            }
+            else
+            {
+                startText.text = "";
+                gameStart = true;
+            }
         }
     }
 }

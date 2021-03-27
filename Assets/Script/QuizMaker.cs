@@ -7,7 +7,9 @@ public class QuizMaker : MonoBehaviour
     public string[,] textData2D;
     public List<int> trueList = new List<int>();
     public List<int> falseList = new List<int>();
+    public string Answer;
     private GameManager gameManager;
+    private int bushu;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,18 +32,12 @@ public class QuizMaker : MonoBehaviour
                 this.textData2D[r, c] = tmpArr[c];
             }
         }
+        this.bushu = this.gameManager.gameMode;
         this.creList();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     public void creList()
     { 
-        int bushu = this.gameManager.gameMode;
         List<int> trueList_wk = new List<int>();
         List<int> falseList_wk = new List<int>();
         int cnt;
@@ -74,31 +70,30 @@ public class QuizMaker : MonoBehaviour
         }
     }
 
-    public string exChar(string exType = "Answer")
+    public string exChar(bool exType)
     {
         int r = 0;
-        int c;
+        int c = 0;
+        int cnt;
         switch (exType)
         {
-            case "Answer":
+            case true:
+                cnt = this.trueList.Count;
+                if (cnt == 0)
+                {
+                    this.creList();
+                    cnt = this.trueList.Count;
+                }
+                r = this.trueList[0];
+                this.trueList.RemoveAt(0);
                 break;
-            case "true":
-                break;
-            case "false":
+            case false:
+                r = this.falseList[0];
+                this.falseList.RemoveAt(0);
                 break;
         }
-        int cnt = this.trueList.Count;
-        if (cnt == 0)
-        {
-            this.creList();
-            cnt = this.trueList.Count;
-        }
-        
-        int r = this.quizMaker.trueList[rnd];
-        string tmpChar = this.quizMaker.exChar(r, this.tsukuri);
-        this.quizMaker.trueList.RemoveAt(rnd);
+        this.Answer = this.textData2D[r, this.bushu];
         string tmpChar = this.textData2D[r, c];
         return tmpChar;
     }
-
 }
