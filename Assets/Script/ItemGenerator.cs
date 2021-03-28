@@ -17,13 +17,13 @@ public class ItemGenerator : MonoBehaviour
     //catのZ座標を入れる
     private float catPosZ = 0f;
     private int objNo = 0;
-    QuizMaker quizMaker;
+    private QuizMaker quizMaker;
 
     // Start is called before the first frame update
     void Start()
     {
         this.catObj = GameObject.Find("cat");
-        this.quizMaker = GameObject.Find("QuizMaker").GetComponent<QuizMaker>(); ;
+        this.quizMaker = GameObject.Find("QuizMaker").GetComponent<QuizMaker>(); 
         this.quizMaker.creList();
     }
 
@@ -39,30 +39,33 @@ public class ItemGenerator : MonoBehaviour
             //
             if (tmpPosZ >= startPos & tmpPosZ <= goalPos)
             {
-                float tmpPosX;
-                if (Random.Range(1,11)%2 == 0)
+                if (this.objNo < 10)
                 {
-                    tmpPosX = -3;
+                    float tmpPosX;
+                    if (Random.Range(1, 11) % 2 == 0)
+                    {
+                        tmpPosX = -3;
+                    }
+                    else
+                    {
+                        tmpPosX = 3;
+                    }
+                    //正解のオブジェクトを生成する
+                    GameObject fishObjTrue = Instantiate(fishPrefab);
+                    fishObjTrue.name = this.objNo.ToString() + "_true";
+                    fishObjTrue.tag = "True";
+                    fishObjTrue.transform.position = new Vector3(tmpPosX, 1.5f, tmpPosZ);
+                    //オブジェクトに漢字を表示する
+                    fishObjTrue.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = this.quizMaker.exChar(true);
+                    //不正解のオブジェクトを生成する
+                    GameObject fishObjFalse = Instantiate(fishPrefab);
+                    fishObjFalse.name = this.objNo.ToString() + "_false";
+                    fishObjFalse.tag = "False";
+                    fishObjFalse.transform.position = new Vector3(-tmpPosX, 1.5f, tmpPosZ);
+                    //オブジェクトに漢字を表示する
+                    fishObjFalse.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = this.quizMaker.exChar(false);
+                    this.objNo++;
                 }
-                else
-                {
-                    tmpPosX = 3;
-                }
-                this.objNo++;
-                //正解のオブジェクトを生成する
-                GameObject fishObjTrue = Instantiate(fishPrefab);
-                fishObjTrue.name = "Q" + this.objNo.ToString() + "_true";
-                fishObjTrue.tag = "True";
-                fishObjTrue.transform.position = new Vector3(tmpPosX, 1.5f, tmpPosZ);
-                //オブジェクトに漢字を表示する
-                fishObjTrue.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = this.quizMaker.exChar(true);
-                //不正解のオブジェクトを生成する
-                GameObject fishObjFalse = Instantiate(fishPrefab);
-                fishObjFalse.name = "Q" + this.objNo.ToString() + "_false";
-                fishObjFalse.tag = "False";
-                fishObjFalse.transform.position = new Vector3(-tmpPosX, 1.5f, tmpPosZ);
-                //オブジェクトに漢字を表示する
-                fishObjFalse.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = this.quizMaker.exChar(false);
             }
         }
     }

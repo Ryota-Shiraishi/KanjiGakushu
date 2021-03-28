@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class SceneChanger : MonoBehaviour
 {
-    public int gameMode = 1;
+    public int gameMode;
 
     // Start is called before the first frame update
     void Start()
@@ -13,12 +14,9 @@ public class SceneChanger : MonoBehaviour
         DontDestroyOnLoad(this);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnClick(int num)
     {
-        if (Input.GetMouseButtonDown(0) == true)
-        {
-            SceneManager.LoadScene("GameScene");
-        }   
+        this.gameMode = num;
+        SceneManager.LoadScene("GameScene");
     }
 }

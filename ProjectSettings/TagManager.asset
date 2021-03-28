@@ -6,6 +6,7 @@ TagManager:
   tags:
   - True
   - False
+  - Goal
   layers:
   - Default
   - TransparentFX

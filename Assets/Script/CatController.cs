@@ -1,13 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using TMPro;
 
 public class CatController : MonoBehaviour
 {
-    private bool gameStart = false;
+    private GameManager gameManager;
     private Animator Animator;
     private Rigidbody Rigidbody;
+    private AudioSource audioSource;
+    private AudioController audioController;
+    private QuizMaker quizMaker;
+    private bool gameStart = false;
+    private bool tutorialFlg = false;
     private float velocityZ = 0f;
     private float movingRange = 2f;
     private float targetPositionX = 2f;
@@ -15,6 +20,11 @@ public class CatController : MonoBehaviour
     private float limitTime = 1f;
     private float ratio = 0f;
     private float count;
+    private bool[] firstCollision = new bool[10];
+    private bool isLButtonDown = false;
+    private bool isRButtonDown = false;
+    private bool goalFlg = false;
+    public TextMeshPro answerText;
 
     // Start is called before the first frame update
     void Start()
@@ -22,13 +32,18 @@ public class CatController : MonoBehaviour
         this.Animator = GetComponent<Animator>();
         this.Animator.SetFloat("Speed", 1);
         this.Rigidbody = GetComponent<Rigidbody>();
+        this.audioSource = GetComponent<AudioSource>();
+        this.audioController = GameObject.Find("AudioController").GetComponent<AudioController>();
+        this.quizMaker = GameObject.Find("QuizMaker").GetComponent<QuizMaker>();
+        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.tutorialFlg = this.gameManager.tutorialFlg;
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.gameStart = GameObject.Find("GameManager").GetComponent<GameManager>().gameStart;
-        if (this.gameStart)
+        this.gameStart = this.gameManager.gameStart;
+        if (this.gameStart && this.goalFlg == false && this.tutorialFlg == false)
         {
             velocityZ = 10f;
         }
@@ -39,12 +54,12 @@ public class CatController : MonoBehaviour
         //catの現在地を取得する
         Vector3 startPosition = this.transform.position;
         //catの目的地を取得する
-        if (Input.GetKeyDown(KeyCode.LeftArrow) && -this.movingRange < startPosition.x)
+        if ((Input.GetKeyDown(KeyCode.LeftArrow) || this.isLButtonDown) && -this.movingRange < startPosition.x)
         {
             targetPositionX = -this.movingRange;
             sumTime = 0f;
         }
-        else if (Input.GetKeyDown(KeyCode.RightArrow) && this.movingRange > startPosition.x )
+        else if ((Input.GetKeyDown(KeyCode.RightArrow) || this.isRButtonDown) && this.movingRange > startPosition.x )
         {
             targetPositionX = this.movingRange;
             sumTime = 0f;
@@ -64,17 +79,46 @@ public class CatController : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        switch (other.tag)
+        if (other.tag == "Goal")
         {
-            case "True" :
-                //GetComponent<ParticleSystem>().Play();
-                Destroy(other.transform.GetChild(0).gameObject);
-                //Destroy(GameObject.Find(other.name.Replace("true","false")));
-                break;
-            case "False":
-                Destroy(other.gameObject);
-                //Destroy(GameObject.Find(other.name.Replace("false","true")));
-                break;
+            this.goalFlg = true;
+            velocityZ = 0f;
         }
+
+        int objNo = int.Parse(other.name.Substring(0, 1));//要エラー修正
+        if (this.firstCollision[objNo] == false)
+        {
+            this.firstCollision[objNo] = true;
+            switch (other.tag)
+            {
+                case "True":
+                    //GetComponent<ParticleSystem>().Play();
+                    Destroy(other.transform.GetChild(0).gameObject);
+                    audioSource.PlayOneShot(this.audioController.SoundSelecter());
+                    this.answerText.text = this.quizMaker.AnswerList[objNo];
+                    break;
+                case "False":
+                    Destroy(other.gameObject);
+                    break;
+            }
+        }
+    }
+
+    public void GetMyLeftButtonDown()
+    {
+        this.isLButtonDown = true;
+    }
+
+    public void GetMyLeftButtonUp()
+    {
+        this.isLButtonDown = false;
+    }
+    public void GetMyRightButtonDown()
+    {
+        this.isRButtonDown = true;
+    }
+    public void GetMyRightButtonUp()
+    {
+        this.isRButtonDown = false;
     }
 }

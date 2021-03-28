@@ -7,7 +7,7 @@ public class QuizMaker : MonoBehaviour
     public string[,] textData2D;
     public List<int> trueList = new List<int>();
     public List<int> falseList = new List<int>();
-    public string Answer;
+    public List<string> AnswerList = new List<string>();
     private GameManager gameManager;
     private int bushu;
     // Start is called before the first frame update
@@ -32,7 +32,14 @@ public class QuizMaker : MonoBehaviour
                 this.textData2D[r, c] = tmpArr[c];
             }
         }
-        this.bushu = this.gameManager.gameMode;
+        if (this.gameManager.gameMode == 99)
+        {
+            this.bushu = 1;
+        }
+        else
+        {
+            this.bushu = this.gameManager.gameMode;
+        }
         this.creList();
     }
 
@@ -45,7 +52,7 @@ public class QuizMaker : MonoBehaviour
 
         for (int r = 1; r<textData2D.GetLength(0); r++)
         {
-            if (textData2D[r, bushu] == "×")
+            if (textData2D[r, this.bushu] == "×")
             {
                 falseList_wk.Add(r);
             }
@@ -73,27 +80,19 @@ public class QuizMaker : MonoBehaviour
     public string exChar(bool exType)
     {
         int r = 0;
-        int c = 0;
-        int cnt;
         switch (exType)
         {
             case true:
-                cnt = this.trueList.Count;
-                if (cnt == 0)
-                {
-                    this.creList();
-                    cnt = this.trueList.Count;
-                }
                 r = this.trueList[0];
                 this.trueList.RemoveAt(0);
+                this.AnswerList.Add(this.textData2D[r, this.bushu]);
                 break;
             case false:
                 r = this.falseList[0];
                 this.falseList.RemoveAt(0);
                 break;
         }
-        this.Answer = this.textData2D[r, this.bushu];
-        string tmpChar = this.textData2D[r, c];
+        string tmpChar = this.textData2D[r, 0];
         return tmpChar;
     }
 }
