@@ -11,6 +11,8 @@ public class CatController : MonoBehaviour
     private AudioSource audioSource;
     private AudioController audioController;
     private QuizMaker quizMaker;
+    private TextMeshProUGUI scoreText;
+    private TextMeshProUGUI goalText;
     private bool gameStart = false;
     private bool tutorialFlg = false;
     private float velocityZ = 0f;
@@ -20,6 +22,7 @@ public class CatController : MonoBehaviour
     private float limitTime = 1f;
     private float ratio = 0f;
     private float count;
+    private int score = 0;
     private bool[] firstCollision = new bool[10];
     private bool isLButtonDown = false;
     private bool isRButtonDown = false;
@@ -36,6 +39,8 @@ public class CatController : MonoBehaviour
         this.audioController = GameObject.Find("AudioController").GetComponent<AudioController>();
         this.quizMaker = GameObject.Find("QuizMaker").GetComponent<QuizMaker>();
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //this.scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
+        this.goalText = GameObject.Find("GoalText").GetComponent<TextMeshProUGUI>();
         this.tutorialFlg = this.gameManager.tutorialFlg;
     }
 
@@ -83,9 +88,17 @@ public class CatController : MonoBehaviour
         {
             this.goalFlg = true;
             velocityZ = 0f;
+            this.Animator.SetFloat("Speed", 0);
+            this.goalText.text = this.score.ToString() + "てん";
         }
 
-        int objNo = int.Parse(other.name.Substring(0, 1));//要エラー修正
+        int objNo = 0;
+
+        if (this.goalFlg == false)
+        {
+            objNo = int.Parse(other.name.Substring(0, 1));
+        }
+        
         if (this.firstCollision[objNo] == false)
         {
             this.firstCollision[objNo] = true;
@@ -95,6 +108,8 @@ public class CatController : MonoBehaviour
                     //GetComponent<ParticleSystem>().Play();
                     Destroy(other.transform.GetChild(0).gameObject);
                     audioSource.PlayOneShot(this.audioController.SoundSelecter());
+                    this.score += 10;
+                    //this.scoreText.text = "まんぷくど：" + this.score.ToString();
                     this.answerText.text = this.quizMaker.AnswerList[objNo];
                     break;
                 case "False":

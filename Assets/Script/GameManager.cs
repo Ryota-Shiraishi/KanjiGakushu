@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 public class GameManager : MonoBehaviour
@@ -9,6 +10,8 @@ public class GameManager : MonoBehaviour
     public bool gameStart = false;
     public bool tutorialFlg = false;
     public TextMeshPro startText;
+    public GameObject TutorialPrefab;
+    private TextMeshProUGUI gameModeText;
     private float countDown = 4f;
     private int seconds;
     private AudioSource audioSource;
@@ -19,12 +22,25 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         this.gameMode = GameObject.Find("SceneChanger").GetComponent<SceneChanger>().gameMode;
-        if (this.gameMode == 99)
+        this.gameModeText = GameObject.Find("GameModeText").GetComponent<TextMeshProUGUI>();
+        switch (this.gameMode)
         {
-            this.tutorialFlg = true;
-        }
+            case 1:
+                this.gameModeText.text = "き\nへ\nん";
+                break;
+            case 2:
+                this.gameModeText.text = "さ\nん\nず\nい";
+                break;
+            case 99:
+                this.tutorialFlg = true;
+                GameObject Tutorial = Instantiate(TutorialPrefab);
+                GameObject.Find("Canvas").transform.Find("TutorialPanel").gameObject.SetActive(true);
+                this.gameModeText.text = "き\nへ\nん";
+                break;
+        }        
         this.audioSource = GameObject.Find("cat").GetComponent<AudioSource>();
         this.audioController = GameObject.Find("AudioController").GetComponent<AudioController>();
+
     }
 
     // Update is called once per frame
