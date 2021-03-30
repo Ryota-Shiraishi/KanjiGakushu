@@ -11,8 +11,9 @@ public class CatController : MonoBehaviour
     private AudioSource audioSource;
     private AudioController audioController;
     private QuizMaker quizMaker;
-    private TextMeshProUGUI scoreText;
+    //private TextMeshProUGUI scoreText;
     private TextMeshProUGUI goalText;
+    private TextMeshProUGUI answerText;
     private bool gameStart = false;
     private bool tutorialFlg = false;
     private float velocityZ = 0f;
@@ -27,7 +28,6 @@ public class CatController : MonoBehaviour
     private bool isLButtonDown = false;
     private bool isRButtonDown = false;
     private bool goalFlg = false;
-    public TextMeshPro answerText;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +41,7 @@ public class CatController : MonoBehaviour
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         //this.scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         this.goalText = GameObject.Find("GoalText").GetComponent<TextMeshProUGUI>();
+        this.answerText = GameObject.Find("AnswerText").GetComponent<TextMeshProUGUI>();
         this.tutorialFlg = this.gameManager.tutorialFlg;
     }
 

@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
+        this.gameMode = 99;
         this.gameMode = GameObject.Find("SceneChanger").GetComponent<SceneChanger>().gameMode;
         this.gameModeText = GameObject.Find("GameModeText").GetComponent<TextMeshProUGUI>();
         switch (this.gameMode)
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (gameStart == false)
+        if (this.gameStart == false && this.gameMode != 99)
         {
             countDown -= Time.deltaTime;
             seconds = (int)countDown;
