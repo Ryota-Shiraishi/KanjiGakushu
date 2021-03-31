@@ -14,6 +14,7 @@ public class CatController : MonoBehaviour
     //private TextMeshProUGUI scoreText;
     private TextMeshProUGUI goalText;
     private TextMeshProUGUI answerText;
+    private GameObject titleBtn;
     private bool gameStart = false;
     private bool tutorialFlg = false;
     private float velocityZ = 0f;
@@ -27,7 +28,7 @@ public class CatController : MonoBehaviour
     private bool[] firstCollision = new bool[10];
     private bool isLButtonDown = false;
     private bool isRButtonDown = false;
-    private bool goalFlg = false;
+    public bool goalFlg = false;
 
     // Start is called before the first frame update
     void Start()
@@ -41,6 +42,7 @@ public class CatController : MonoBehaviour
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         //this.scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         this.goalText = GameObject.Find("GoalText").GetComponent<TextMeshProUGUI>();
+        this.titleBtn = GameObject.Find("DefultPanel").transform.Find("TitleButton").gameObject;
         this.answerText = GameObject.Find("AnswerText").GetComponent<TextMeshProUGUI>();
         this.tutorialFlg = this.gameManager.tutorialFlg;
     }
@@ -90,7 +92,11 @@ public class CatController : MonoBehaviour
             this.goalFlg = true;
             velocityZ = 0f;
             this.Animator.SetFloat("Speed", 0);
-            this.goalText.text = this.score.ToString() + "てん";
+            if (this.tutorialFlg == false)
+            {
+                this.goalText.text = this.score.ToString() + "てん";
+            }
+            this.titleBtn.SetActive(true);
         }
 
         int objNo = 0;
@@ -115,6 +121,12 @@ public class CatController : MonoBehaviour
                     break;
                 case "False":
                     Destroy(other.gameObject);
+                    break;
+                case "Tutorial":
+                    Destroy(other.transform.GetChild(0).gameObject);
+                    audioSource.PlayOneShot(this.audioController.SoundSelecter());
+                    this.answerText.text = "村";
+                    this.firstCollision[objNo] = false;
                     break;
             }
         }

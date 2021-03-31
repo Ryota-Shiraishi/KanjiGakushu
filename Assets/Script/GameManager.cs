@@ -3,26 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public int gameMode;
+    public int tutorialState = 0;
     public bool gameStart = false;
     public bool tutorialFlg = false;
     public TextMeshPro startText;
-    public GameObject TutorialPrefab;
+    public GameObject tutorialPrefab;
+    private GameObject sceneChanger;
+    private GameObject tutorialObj;
     private TextMeshProUGUI gameModeText;
     private float countDown = 4f;
     private int seconds;
     private AudioSource audioSource;
     private AudioController audioController;
-    private bool flg = false;
+    private bool flg = false;    
 
     // Start is called before the first frame update
     private void Awake()
     {
-        this.gameMode = 99;
-        this.gameMode = GameObject.Find("SceneChanger").GetComponent<SceneChanger>().gameMode;
+        this.sceneChanger = GameObject.Find("SceneChanger");
+        this.gameMode = this.sceneChanger.GetComponent<SceneChanger>().gameMode;
         this.gameModeText = GameObject.Find("GameModeText").GetComponent<TextMeshProUGUI>();
         switch (this.gameMode)
         {
@@ -34,20 +38,19 @@ public class GameManager : MonoBehaviour
                 break;
             case 99:
                 this.tutorialFlg = true;
-                GameObject Tutorial = Instantiate(TutorialPrefab);
+                this.tutorialObj = Instantiate(tutorialPrefab);
                 GameObject.Find("Canvas").transform.Find("TutorialPanel").gameObject.SetActive(true);
                 this.gameModeText.text = "き\nへ\nん";
                 break;
-        }        
+        }
         this.audioSource = GameObject.Find("cat").GetComponent<AudioSource>();
         this.audioController = GameObject.Find("AudioController").GetComponent<AudioController>();
-
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (this.gameStart == false && this.gameMode != 99)
+        if (this.gameStart == false && this.tutorialFlg == false)
         {
             countDown -= Time.deltaTime;
             seconds = (int)countDown;
@@ -87,5 +90,15 @@ public class GameManager : MonoBehaviour
                     break;
             }
         }
+    }
+    public void SceneChange()
+    {
+        SceneManager.LoadScene("TitleScene");
+        Destroy(this.sceneChanger);
+    }
+
+    public void OnClick()
+    {
+        this.tutorialState++;
     }
 }
