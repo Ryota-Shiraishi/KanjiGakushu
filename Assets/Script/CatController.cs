@@ -14,6 +14,7 @@ public class CatController : MonoBehaviour
     //private TextMeshProUGUI scoreText;
     private TextMeshProUGUI goalText;
     private TextMeshProUGUI answerText;
+    //private GameObject answerPanel;
     private GameObject titleBtn;
     private bool gameStart = false;
     private bool tutorialFlg = false;
@@ -43,6 +44,8 @@ public class CatController : MonoBehaviour
         //this.scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         this.goalText = GameObject.Find("GoalText").GetComponent<TextMeshProUGUI>();
         this.titleBtn = GameObject.Find("DefultPanel").transform.Find("TitleButton").gameObject;
+        //this.answerPanel = GameObject.Find("DefultPanel").transform.Find("AnswerPanel").gameObject;
+        //this.answerText = this.answerPanel.transform.Find("AnswerText").GetComponent<TextMeshProUGUI>();
         this.answerText = GameObject.Find("AnswerText").GetComponent<TextMeshProUGUI>();
         this.tutorialFlg = this.gameManager.tutorialFlg;
     }
@@ -117,6 +120,7 @@ public class CatController : MonoBehaviour
                     audioSource.PlayOneShot(this.audioController.SoundSelecter());
                     this.score += 10;
                     //this.scoreText.text = "まんぷくど：" + this.score.ToString();
+                    //this.answerPanel.SetActive(true);
                     this.answerText.text = this.quizMaker.AnswerList[objNo];
                     break;
                 case "False":

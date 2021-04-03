@@ -47,7 +47,7 @@ public class TutorialManager : MonoBehaviour
             case 0:
                 this.leftButton.SetActive(false);
                 this.rightButton.SetActive(false);
-                this.textObj.text = "おなかが すいたにゃあ";
+                this.textObj.text = "おなかが すいた にゃあ";
                 break;
             case 1:
                 this.textPanel.SetActive(false);
@@ -72,17 +72,17 @@ public class TutorialManager : MonoBehaviour
                         this.fishObjFalse.transform.position = new Vector3(3f, 1.5f, 15f);
                     }
                     this.textPanel.SetActive(true);
-                    this.textObj.text = "わあ！\nおいしそうな さかなだ！";
+                    this.textObj.text = "わあ！さかなだ！\nおいしそう！";
                 }
                 break;
             case 2:
-                this.textObj.text = "どっちの さかなに しようか にゃあ？";
+                this.textObj.text = "どっちの さかなに\nしようか にゃあ？";
                 break;
             case 3:
-                this.textObj.text = "ねこちゃんが たべられる さかなには\nきまりが あるんだ";
+                this.textObj.text = "ネコちゃんが食べられる魚には\nルールがあるんだ";
                 break;
             case 4:
-                this.textObj.text = "いまは「きへん」を えらんでいるね";
+                this.textObj.text = "今は「きへん」を 選んでいるね";
                 break;
             case 5:
                 this.textObj.text = "";
@@ -90,20 +90,19 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 6:
                 this.arrow.SetActive(false);
-                this.textObj.text = "「きへん」と くっつく かんじは\nどっちかな？";
+                this.textObj.text = "「きへん」とくっつく漢字は\nどっちかな？";
                 break;
             case 7:
-                this.textObj.text = "「きへん」と くっつくのは\n「寸」だね";
+                this.textObj.text = "「きへん」とくっつくのは\n「寸」だね";
                 break;
             case 8:
-                this.textObj.text = "「木」＋「寸」は どんな じ かな？";
+                this.textObj.text = "「木」と「寸」がくっつくと\nどんな漢字になるかな？";
                 break;
             case 9:
-                this.answerText.text = "村";
                 this.textObj.text = "そう「村」だね";
                 break;
             case 10:
-                this.textObj.text = "さんかくを タップすると\nねこちゃんが よこに うごくよ";
+                this.textObj.text = "三角のボタンをタップすると\nネコちゃんが横に動くよ";
                 this.textBtn.SetActive(false);
                 this.leftButton.SetActive(true);
                 this.rightButton.SetActive(true);
@@ -120,12 +119,12 @@ public class TutorialManager : MonoBehaviour
                         this.catAnimator.SetFloat("Speed", 0);
                         this.catRigidbody.velocity = new Vector3(0f, 0f, 0f);
                         this.textPanel.SetActive(true);
-                        this.textObj.text = "ありがとう！\nもっと たべたい にゃあ";
+                        this.textObj.text = "おいしい！\nもっと たべたい にゃあ";
                     }
                 }
                 break;
             case 11:
-                this.textObj.text = "ぼくと おいしい さかなを\nさがしに いこう";
+                this.textObj.text = "おいしい さかなを\nいっしょに さがそう";
                 break;
             case 12:
                 this.textPanel.SetActive(false);
@@ -140,7 +139,7 @@ public class TutorialManager : MonoBehaviour
             this.catAnimator.SetFloat("Speed", 0);
             this.catRigidbody.velocity = new Vector3(0f, 0f, 0f);
             this.textPanel.SetActive(true);
-            this.textObj.text = "れんしゅうは ばっちりだね";
+            this.textObj.text = "れんしゅうは\nばっちりだね";
             this.textBtn.SetActive(false);
         }
     }
