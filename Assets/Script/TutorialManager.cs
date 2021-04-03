@@ -7,140 +7,138 @@ public class TutorialManager : MonoBehaviour
 {
     public GameObject fishPrefab;
     private GameObject cat;
-    private GameObject textPanel;
     private GameObject arrow;
-    private GameObject textBtn;
-    private GameObject leftButton;
-    private GameObject rightButton;
-    private GameObject fishObjTrue;
-    private GameObject fishObjFalse;
-    private TextMeshProUGUI textObj;
-    private TextMeshProUGUI answerText;
-    private Rigidbody catRigidbody;
+    private GameObject fishObj;
     private Animator catAnimator;
     private CatController catController;
+    private ControlPanel controlPanel;
+    private TutorialText tutorialText;
+    private ItemGenerator itemGenerator;
     private GameManager gameManager;
+    private int currentState;
+    private int oldState;
 
     // Start is called before the first frame update
     void Start()
     {
         this.cat = GameObject.Find("cat");
-        this.catRigidbody = this.cat.GetComponent<Rigidbody>();
         this.catAnimator = this.cat.GetComponent<Animator>();
         this.catAnimator.SetFloat("Speed", 0);
         this.catController = this.cat.GetComponent<CatController>();
-        this.textPanel = GameObject.Find("TextPanel");
-        this.textObj = GameObject.Find("TextObj").GetComponent<TextMeshProUGUI>();
-        this.textBtn = GameObject.Find("TextBtn");
         this.arrow = GameObject.Find("GameMode").transform.Find("Arrow").gameObject;
-        this.answerText = GameObject.Find("AnswerText").GetComponent<TextMeshProUGUI>();
-        this.leftButton = GameObject.Find("LeftButton");
-        this.rightButton = GameObject.Find("RightButton");
+        this.controlPanel = this.GetComponent<ControlPanel>();
+        this.tutorialText = this.GetComponent<TutorialText>();
+        this.itemGenerator = GameObject.Find("ItemGenerator").GetComponent<ItemGenerator>();
         this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        this.currentState = this.oldState = this.gameManager.tutorialState;
     }
 
     // Update is called once per frame
     void Update()
     {
-        switch (this.gameManager.tutorialState)
+        //一度で完結する処理
+        this.currentState = this.gameManager.tutorialState;
+        if (this.currentState > this.oldState || this.currentState == 0)
         {
-            case 0:
-                this.leftButton.SetActive(false);
-                this.rightButton.SetActive(false);
-                this.textObj.text = "おなかが すいた にゃあ";
-                break;
+            this.oldState = currentState;
+            switch (this.gameManager.tutorialState)
+            {
+                case 0:
+                    this.controlPanel.SetActive(false);
+                    this.tutorialText.SetText("おなかが すいた にゃあ", true, true);
+                    break;
+                case 1:
+                    this.tutorialText.SetText("", false, false);
+                    this.catAnimator.SetFloat("Speed", 1);
+                    //一度では完結しない処理ブロックにも処理あり
+                    break;
+                case 2:
+                    this.tutorialText.SetText("どっちの さかなに\nしようか にゃあ？", true, true);
+                    break;
+                case 3:
+                    this.tutorialText.SetText("ネコちゃんが食べられる魚には\nルールがあるんだ", true, true);
+                    break;
+                case 4:
+                    this.tutorialText.SetText("今は「きへん」を 選んでいるね", true, true);
+                    break;
+                case 5:
+                    this.tutorialText.SetText("", true,true);
+                    this.arrow.SetActive(true);
+                    break;
+                case 6:
+                    this.tutorialText.SetText("「きへん」とくっつく漢字は\nどっちかな？", true, true);
+                    this.arrow.SetActive(false);
+                    break;
+                case 7:
+                    this.tutorialText.SetText("「きへん」とくっつくのは\n「寸」だね", true, true);
+                    break;
+                case 8:
+                    this.tutorialText.SetText("「木」と「寸」がくっつくと\nどんな漢字になるかな？", true, true);
+                    break;
+                case 9:
+                    this.tutorialText.SetText("そう「村」だね", true, true);
+                    break;
+                case 10:
+                    this.tutorialText.SetText("三角のボタンをタップすると\nネコちゃんが横に動くよ", true, false);
+                    this.controlPanel.SetActive(true);
+                    //一度では完結しない処理ブロックにも処理あり
+                    break;
+                case 11:
+                    this.tutorialText.SetText("おいしい さかなを\nいっしょに さがそう", true, true);
+                    break;
+                case 12:
+                    this.tutorialText.SetText("", false, false);
+                    this.controlPanel.SetActive(this);
+                    this.catAnimator.SetFloat("Speed", 1);
+                    //一度では完結しない処理ブロックにも処理あり
+                    break;
+            }
+        }
+        //一度では完結しない処理
+        switch (this.currentState)
+        {
             case 1:
-                this.textPanel.SetActive(false);
-                this.catAnimator.SetFloat("Speed", 1);
-                this.catRigidbody.velocity = new Vector3(0f, 0f, 5f);
+                //移動後のチュートリアル
                 if (this.cat.transform.position.z > 5f)
                 {
-                    this.catAnimator.SetFloat("Speed", 0);
-                    this.catRigidbody.velocity = new Vector3(0f, 0f, 0f);
-                    if (fishObjTrue is null)
+                    if (this.fishObj is null)
                     {
-                        this.fishObjTrue = Instantiate(fishPrefab);
-                        this.fishObjTrue.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = "寸";
-                        this.fishObjTrue.name = "0_tutorial";
-                        this.fishObjTrue.tag = "Tutorial";
-                        this.fishObjTrue.transform.position = new Vector3(-3f, 1.5f, 15f);
+                        this.itemGenerator.TutorialObj();
+                        this.fishObj = GameObject.Find("0_tutorial");
                     }
-                    if (fishObjFalse is null)
-                    {
-                        this.fishObjFalse = Instantiate(fishPrefab);
-                        this.fishObjFalse.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = "也";
-                        this.fishObjFalse.transform.position = new Vector3(3f, 1.5f, 15f);
-                    }
-                    this.textPanel.SetActive(true);
-                    this.textObj.text = "わあ！さかなだ！\nおいしそう！";
-                }
-                break;
-            case 2:
-                this.textObj.text = "どっちの さかなに\nしようか にゃあ？";
-                break;
-            case 3:
-                this.textObj.text = "ネコちゃんが食べられる魚には\nルールがあるんだ";
-                break;
-            case 4:
-                this.textObj.text = "今は「きへん」を 選んでいるね";
-                break;
-            case 5:
-                this.textObj.text = "";
-                this.arrow.SetActive(true);
-                break;
-            case 6:
-                this.arrow.SetActive(false);
-                this.textObj.text = "「きへん」とくっつく漢字は\nどっちかな？";
-                break;
-            case 7:
-                this.textObj.text = "「きへん」とくっつくのは\n「寸」だね";
-                break;
-            case 8:
-                this.textObj.text = "「木」と「寸」がくっつくと\nどんな漢字になるかな？";
-                break;
-            case 9:
-                this.textObj.text = "そう「村」だね";
-                break;
-            case 10:
-                this.textObj.text = "三角のボタンをタップすると\nネコちゃんが横に動くよ";
-                this.textBtn.SetActive(false);
-                this.leftButton.SetActive(true);
-                this.rightButton.SetActive(true);
-                if (this.cat.transform.position.x == -2f)
-                {
-                    this.textBtn.SetActive(true);
-                    this.textPanel.SetActive(false);
-                    this.leftButton.SetActive(false);
-                    this.rightButton.SetActive(false);
-                    this.catAnimator.SetFloat("Speed", 1);
-                    this.catRigidbody.velocity = new Vector3(0f, 0f, 5f);
-                    if (this.cat.transform.position.z > 17f)
+                    if (this.catController.walkFlg == true)
                     {
                         this.catAnimator.SetFloat("Speed", 0);
-                        this.catRigidbody.velocity = new Vector3(0f, 0f, 0f);
-                        this.textPanel.SetActive(true);
-                        this.textObj.text = "おいしい！\nもっと たべたい にゃあ";
+                        this.tutorialText.SetText("わあ！さかなだ！\nおいしそう！", true, true);
                     }
                 }
                 break;
-            case 11:
-                this.textObj.text = "おいしい さかなを\nいっしょに さがそう";
+            case 10:
+                //catがx座標-2に移動したときの処理
+                if (this.cat.transform.position.x == -2f && this.cat.transform.position.z < 17f)
+                {
+                    if (this.catController.walkFlg == false)
+                    {
+                        this.tutorialText.SetText("", false, false);
+                        this.controlPanel.SetActive(false);
+                        this.catAnimator.SetFloat("Speed", 1);
+                    }
+                }
+                if (this.cat.transform.position.z > 17f)
+                {
+                    if (this.catController.walkFlg == true)
+                    {
+                        this.catAnimator.SetFloat("Speed", 0);
+                        this.tutorialText.SetText("おいしい！\nもっと たべたい にゃあ", true, true);
+                    }
+                }
                 break;
             case 12:
-                this.textPanel.SetActive(false);
-                this.leftButton.SetActive(true);
-                this.rightButton.SetActive(true);
-                this.catAnimator.SetFloat("Speed", 1);
-                this.catRigidbody.velocity = new Vector3(0f, 0f, 10f);
+                if (this.catController.goalFlg)
+                {
+                    this.tutorialText.SetText("れんしゅうは\nばっちりだね", true, false);
+                }
                 break;
-        }
-        if (this.catController.goalFlg)
-        {
-            this.catAnimator.SetFloat("Speed", 0);
-            this.catRigidbody.velocity = new Vector3(0f, 0f, 0f);
-            this.textPanel.SetActive(true);
-            this.textObj.text = "れんしゅうは\nばっちりだね";
-            this.textBtn.SetActive(false);
         }
     }
 }

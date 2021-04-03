@@ -6,7 +6,6 @@ using TMPro;
 public class TextController : MonoBehaviour
 {
     private GameObject cat;
-    //private GameObject answerPanel;
     private float difference;
     private float count = 1f;
     private TextMeshProUGUI answerText;
@@ -16,7 +15,6 @@ public class TextController : MonoBehaviour
     {
         this.cat = GameObject.Find("cat");
         this.difference = this.transform.position.z - cat.transform.position.z;
-        //answerPanel = GameObject.Find("DefultPanel").transform.Find("AnswerPanel").gameObject;
         answerText = this.GetComponent<TextMeshProUGUI>();
     }
 
@@ -33,7 +31,6 @@ public class TextController : MonoBehaviour
             if (count <= 0)
             {
                 this.answerText.text = "";
-                //this.answerPanel.SetActive(false);
             }
         }
     }

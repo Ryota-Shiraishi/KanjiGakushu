@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4056197432987113569}
   - component: {fileID: 7162595781039821661}
+  - component: {fileID: 2566854138358613607}
+  - component: {fileID: 6958304882575908481}
   m_Layer: 0
   m_Name: TutorialPrefab
   m_TagString: Untagged
@@ -45,3 +47,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishPrefab: {fileID: 101594388676883766, guid: f1b3a7088821afd40aa4636a5c61dd68,
     type: 3}
+--- !u!114 &2566854138358613607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4056197432987113568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31fb5ae232a6adc48bfd1200994f845a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6958304882575908481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4056197432987113568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6867f30a839151d49b40fd96acdb8d71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

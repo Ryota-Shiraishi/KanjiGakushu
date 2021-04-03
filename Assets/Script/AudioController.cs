@@ -16,18 +16,6 @@ public class AudioController : MonoBehaviour
     public AudioClip countDown2;
     public AudioClip countDown3;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public AudioClip SoundSelecter()
     {
         int rnd;

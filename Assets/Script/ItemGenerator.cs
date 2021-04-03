@@ -69,4 +69,16 @@ public class ItemGenerator : MonoBehaviour
             }
         }
     }
+
+    public void TutorialObj()
+    {
+        GameObject fishObjTrue = Instantiate(fishPrefab);
+        fishObjTrue.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = "寸";
+        fishObjTrue.name = "0_tutorial";
+        fishObjTrue.tag = "Tutorial";
+        fishObjTrue.transform.position = new Vector3(-3f, 1.5f, 15f);
+        GameObject fishObjFalse = Instantiate(fishPrefab);
+        fishObjFalse.transform.Find("TmpPrefab").GetComponent<TextMeshPro>().text = "也";
+        fishObjFalse.transform.position = new Vector3(3f, 1.5f, 15f);
+    }
 }

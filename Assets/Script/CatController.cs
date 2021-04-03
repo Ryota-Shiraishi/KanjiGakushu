@@ -14,7 +14,6 @@ public class CatController : MonoBehaviour
     //private TextMeshProUGUI scoreText;
     private TextMeshProUGUI goalText;
     private TextMeshProUGUI answerText;
-    //private GameObject answerPanel;
     private GameObject titleBtn;
     private bool gameStart = false;
     private bool tutorialFlg = false;
@@ -29,13 +28,14 @@ public class CatController : MonoBehaviour
     private bool[] firstCollision = new bool[10];
     private bool isLButtonDown = false;
     private bool isRButtonDown = false;
+    public bool walkFlg = false;
     public bool goalFlg = false;
 
     // Start is called before the first frame update
     void Start()
     {
         this.Animator = GetComponent<Animator>();
-        this.Animator.SetFloat("Speed", 1);
+        this.Animator.SetFloat("Speed", 0);
         this.Rigidbody = GetComponent<Rigidbody>();
         this.audioSource = GetComponent<AudioSource>();
         this.audioController = GameObject.Find("AudioController").GetComponent<AudioController>();
@@ -44,8 +44,6 @@ public class CatController : MonoBehaviour
         //this.scoreText = GameObject.Find("ScoreText").GetComponent<TextMeshProUGUI>();
         this.goalText = GameObject.Find("GoalText").GetComponent<TextMeshProUGUI>();
         this.titleBtn = GameObject.Find("DefultPanel").transform.Find("TitleButton").gameObject;
-        //this.answerPanel = GameObject.Find("DefultPanel").transform.Find("AnswerPanel").gameObject;
-        //this.answerText = this.answerPanel.transform.Find("AnswerText").GetComponent<TextMeshProUGUI>();
         this.answerText = GameObject.Find("AnswerText").GetComponent<TextMeshProUGUI>();
         this.tutorialFlg = this.gameManager.tutorialFlg;
     }
@@ -56,14 +54,26 @@ public class CatController : MonoBehaviour
         this.gameStart = this.gameManager.gameStart;
         if (this.gameStart && this.goalFlg == false && this.tutorialFlg == false)
         {
-            velocityZ = 10f;
+            this.Animator.SetFloat("Speed", 1);
         }
 
+        if(this.Animator.GetFloat("Speed") == 0)
+        {
+            this.walkFlg = false;
+            velocityZ = 0f;
+        }
+        else
+        {
+            this.walkFlg = true;
+            velocityZ = 10f;
+        }
+        
         //catをZ方向に移動させる
         this.Rigidbody.velocity = new Vector3(0f, 0f, velocityZ);
 
         //catの現在地を取得する
         Vector3 startPosition = this.transform.position;
+
         //catの目的地を取得する
         if ((Input.GetKeyDown(KeyCode.LeftArrow) || this.isLButtonDown) && -this.movingRange < startPosition.x)
         {
@@ -93,7 +103,6 @@ public class CatController : MonoBehaviour
         if (other.tag == "Goal")
         {
             this.goalFlg = true;
-            velocityZ = 0f;
             this.Animator.SetFloat("Speed", 0);
             if (this.tutorialFlg == false)
             {
@@ -120,7 +129,6 @@ public class CatController : MonoBehaviour
                     audioSource.PlayOneShot(this.audioController.SoundSelecter());
                     this.score += 10;
                     //this.scoreText.text = "まんぷくど：" + this.score.ToString();
-                    //this.answerPanel.SetActive(true);
                     this.answerText.text = this.quizMaker.AnswerList[objNo];
                     break;
                 case "False":
