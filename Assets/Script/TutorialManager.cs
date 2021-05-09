@@ -21,7 +21,7 @@ public class TutorialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.cat = GameObject.Find("cat");
+        this.cat = GameObject.Find("Cat");
         this.catAnimator = this.cat.GetComponent<Animator>();
         this.catAnimator.SetFloat("Speed", 0);
         this.catController = this.cat.GetComponent<CatController>();
@@ -115,7 +115,7 @@ public class TutorialManager : MonoBehaviour
                 break;
             case 10:
                 //catがx座標-2に移動したときの処理
-                if (this.cat.transform.position.x == -2f && this.cat.transform.position.z < 17f)
+                if (this.cat.transform.position.x < -1f && this.cat.transform.position.z < 17f)
                 {
                     if (this.catController.walkFlg == false)
                     {

@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
                 this.gameModeText.text = "き\nへ\nん";
                 break;
         }
-        this.audioSource = GameObject.Find("cat").GetComponent<AudioSource>();
+        this.audioSource = GameObject.Find("Cat").GetComponent<AudioSource>();
         this.audioController = GameObject.Find("AudioController").GetComponent<AudioController>();
     }
 

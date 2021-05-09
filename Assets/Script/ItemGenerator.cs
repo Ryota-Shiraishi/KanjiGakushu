@@ -22,7 +22,7 @@ public class ItemGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.catObj = GameObject.Find("cat");
+        this.catObj = GameObject.Find("Cat");
         this.quizMaker = GameObject.Find("QuizMaker").GetComponent<QuizMaker>(); 
         this.quizMaker.creList();
     }

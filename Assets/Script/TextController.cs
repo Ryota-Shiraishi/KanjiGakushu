@@ -13,7 +13,7 @@ public class TextController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        this.cat = GameObject.Find("cat");
+        this.cat = GameObject.Find("Cat");
         this.difference = this.transform.position.z - cat.transform.position.z;
         answerText = this.GetComponent<TextMeshProUGUI>();
     }

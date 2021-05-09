@@ -11,19 +11,19 @@ public class ItemDestroy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        objPosZ = this.gameObject.transform.position.z;
+        this.objPosZ = this.gameObject.transform.position.z;
     }
 
     // Update is called once per frame
     void Update()
     {
-        mainCamera = GameObject.Find("Main Camera");
-        if (mainCamera.transform.position.z >= objPosZ)
+        this.mainCamera = GameObject.Find("Main Camera");
+        if (this.mainCamera.transform.position.z >= objPosZ)
         {
             Destroy(gameObject);
         }
-        cat = GameObject.Find("cat");
-        if (cat.transform.position.z >= objPosZ)
+        this.cat = GameObject.Find("Cat");
+        if (this.cat.transform.position.z >= objPosZ)
         {
             this.gameObject.GetComponent<MeshCollider>().enabled = false;
         }
